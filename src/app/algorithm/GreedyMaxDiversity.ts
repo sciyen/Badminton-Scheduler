@@ -1,7 +1,4 @@
-import React, { useMemo, useState, useCallback } from "react";
 import { PlayerStats, Match } from "@/app/types";
-import { match } from "assert";
-
 
 const allPossibleCombinations = (n: number, m: number): number[][] => {
     const result = [];
@@ -69,14 +66,13 @@ export function nextGreedyMatch(stats: PlayerStats[]): Match {
     let bestScore = -1;
 
     // Iterate through all possible pairs of players for team 1
-    let gain = 0;
     allMatches.forEach( match => {
         const score = calculateDiversityScore(stats, match);
         
-        if (gain > bestScore) {
-            bestScore = gain;
+        if (score > bestScore) {
+            bestScore = score;
             bestMatch = [match];
-        } else if (gain == bestScore) {
+        } else if (score == bestScore) {
             bestMatch = [...bestMatch, match]
         }
     })

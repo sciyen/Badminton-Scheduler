@@ -3,7 +3,9 @@ import { AgGridReact } from "ag-grid-react";
 import {
     GridApi,
     ColDef,
+    GridOptions,
     GridReadyEvent,
+    CellValueChangedEvent,
     ModuleRegistry,
     AllCommunityModule,
     ClientSideRowModelModule,
@@ -40,6 +42,15 @@ const columnDefs: ColDef[] = [
     { field: "winRate", headerName: "Win Rate", sortable: true, filter: true },
 ];
 
+interface IScore {
+    name: string;
+    games: number;
+    wins: number;
+    num_teammates: number;
+    num_opponents: number;
+    winRate: string;
+}
+
 interface scoreBoardProps {
     editable: boolean;
     stats: PlayerStats[];
@@ -66,7 +77,7 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
     };
 
     // Allow users to update the name of the selected player
-    const onCellValueChanged = useCallback((params: any) => {
+    const onCellValueChanged = useCallback((params: CellValueChangedEvent) => {
         const selectedPlayer = params.rowIndex;
         const newName = params.newValue;
         const updatedStats = stats.map((player, idx) => {
@@ -97,22 +108,33 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
     const removePlayer = useCallback(() => {
         if (!api) return;
         const selected = api.getSelectedRows();
-        const nameToRemove = selected.map((player: any) => player.name);
+        const nameToRemove = selected.map((player: IScore) => player.name);
 
         onPlayerChange(stats.filter(player => !nameToRemove.includes(player.name)));
     }, [api, stats, onPlayerChange]);
 
+    const gridOptions: GridOptions<IScore> = {
+        defaultColDef: {
+            flex: 1,
+            minWidth: 100,
+            editable: false,
+            resizable: true,
+        },
+        rowSelection: 'multiple',
+        suppressRowClickSelection: true,
+        animateRows: true,
+        theme: AgTheme,
+        columnDefs: columnDefs,
+        rowData: rowData,
+        onCellValueChanged: onCellValueChanged,
+        domLayout: "autoHeight",
+        onGridReady: onGridReady
+    };
+
     return (
         <div className="score-board">
-            <AgGridReact
-                theme={AgTheme}
-                columnDefs={columnDefs}
-                rowData={rowData}
-                onCellValueChanged={onCellValueChanged}
-                domLayout="autoHeight"
-                rowSelection='multiple'
-                onGridReady={onGridReady}
-            /><div>
+            <AgGridReact gridOptions={gridOptions} />
+            <div>
 
                 <ButtonGroup disabled={!editable} variant="contained" aria-label="outlined primary button group">
                     <Button variant="contained" onClick={addPlayer}>Add A Player</Button>

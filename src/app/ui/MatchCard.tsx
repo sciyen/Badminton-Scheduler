@@ -1,9 +1,8 @@
-import React, { useMemo, useState, useCallback } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
 import { PlayerStats, Match } from "../types";
-import { showName, showTeam } from "../utils";
+import { showTeam } from "../utils";
 
 interface MatchCardProps {
     stats: PlayerStats[];
