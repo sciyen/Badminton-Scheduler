@@ -8,6 +8,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import ScoreBoard from "./ui/ScoreBoard";
 import MatchCard from "./ui/MatchCard";
 import NewMatch from "./ui/NewMatch";
+import Typography from "@mui/material/Typography";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { PlayerStats, Match } from "./types";
 
 import { nextGreedyMatch } from "./algorithm/GreedyMaxDiversity";
@@ -18,7 +20,7 @@ const theme = createTheme({
             main: '#23315c',
         },
         secondary: {
-            main: '#dc004e',
+            main: '#171717',
         },
     },
 });
@@ -76,9 +78,13 @@ export default function BadmintonScheduler() {
 
     return (
         <ThemeProvider theme={theme}>
-            <h1>
-                Badminton Scheduler
-            </h1>
+            <Typography variant="h2" className="text-center pt-5">Badminton Scheduler</Typography>
+            <Typography variant="subtitle1" className="text-center pd-5">
+                <a href="https://github.com/sciyen/Badminton-Scheduler">
+                    <GitHubIcon className="inline-block ml-2 mr-2" fontSize="small" sx={{ marginTop: -0.3 }} />
+                </a>
+                sciyen.ycc
+            </Typography>
             <div className="p-4 space-y-4">
                 {/* <div>Diversity Score: {lastDiversity}</div> */}
                 <ScoreBoard
@@ -98,7 +104,7 @@ export default function BadmintonScheduler() {
                 <hr style={{ margin: '1rem 0' }} />
 
                 {(gameStates != GameState.CONFIGURE) && (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 justify-center">
                         <div className="space-y-2">
                             {matches.map((m, idx) => (
                                 <MatchCard
