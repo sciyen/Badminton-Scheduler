@@ -86,14 +86,17 @@ export function nextGreedyMatch(stats: PlayerStats[]): Match {
 
 function calculateDiversityScore(stats: PlayerStats[], match: Match): number {
     let gain = 0;
+    const w_game = 0.1;
     match.team1.forEach( p => {
         gain += new Set(match.team1).difference(new Set([p])).difference(stats[p].teammates).size;
         gain += new Set(match.team2).difference(stats[p].opponents).size;
+        gain -= w_game * stats[p].games; // penalize for number of games played
     })
 
     match.team2.forEach( p => {
         gain += new Set(match.team2).difference(new Set([p])).difference(stats[p].teammates).size;
         gain += new Set(match.team1).difference(stats[p].opponents).size;
+        gain -= w_game * stats[p].games; // penalize for number of games played
     })
 
     return gain;

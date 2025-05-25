@@ -61,6 +61,7 @@ export default function BadmintonScheduler() {
         })
 
         setStats(newStats);
+        return newStats;
     }, [stats])
 
     return (
@@ -102,10 +103,10 @@ export default function BadmintonScheduler() {
                                 setMatches(prev => [...prev, match]);
 
                                 // Update stats
-                                updateStats(match);
+                                const newStats = updateStats(match);
 
                                 // Schedule new match
-                                const newMatch = nextGreedyMatch(stats);
+                                const newMatch = nextGreedyMatch(newStats);
                                 setDefaultMatch(newMatch);
                             }} />
                     </div>

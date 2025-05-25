@@ -59,7 +59,7 @@ interface scoreBoardProps {
 
 const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange }) => {
     const [api, setApi] = useState<GridApi>();
-    const rowData = useMemo(() => {
+    const rowData: IScore[] = useMemo(() => {
         return stats.map((player) => ({
             name: player.name,
             games: player.games,
@@ -102,8 +102,7 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
             };
             onPlayerChange([...stats, newPlayer]);
         }
-    }
-        , [stats, onPlayerChange]);
+    }, [stats, onPlayerChange]);
 
     const removePlayer = useCallback(() => {
         if (!api) return;
@@ -125,15 +124,17 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
         animateRows: true,
         theme: AgTheme,
         columnDefs: columnDefs,
-        rowData: rowData,
-        onCellValueChanged: onCellValueChanged,
         domLayout: "autoHeight",
         onGridReady: onGridReady
     };
 
     return (
         <div className="score-board">
-            <AgGridReact gridOptions={gridOptions} />
+            <AgGridReact
+                gridOptions={gridOptions}
+                onCellValueChanged={onCellValueChanged}
+                rowData={rowData}
+            />
             <div>
 
                 <ButtonGroup disabled={!editable} variant="contained" aria-label="outlined primary button group">
