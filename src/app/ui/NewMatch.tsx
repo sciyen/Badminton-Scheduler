@@ -11,10 +11,11 @@ import { PlayerStats, Match } from "../types";
 interface NewMatchProps {
     stats: PlayerStats[];
     defaultMatch: Match;
+    className?: string;
     onNewMatch: (match: Match) => void;
 }
 
-export default function NewMatch({ stats, defaultMatch, onNewMatch }: NewMatchProps) {
+export default function NewMatch({ stats, defaultMatch, className, onNewMatch }: NewMatchProps) {
     const [match, setMatch] = useState<Match>(defaultMatch);
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export default function NewMatch({ stats, defaultMatch, onNewMatch }: NewMatchPr
     }, [match, onNewMatch]);
 
     return (
-        <Card>
+        <Card className={className}>
             <CardContent>
                 <h4>Next Match</h4>
                 <div>
@@ -62,8 +63,11 @@ export default function NewMatch({ stats, defaultMatch, onNewMatch }: NewMatchPr
                 </div>
 
                 {/* (Score: {m.diversityScore}) */}
-                <Button onClick={() => { handleWinner("team1") }}>Team 1 Wins</Button>
-                <Button onClick={() => { handleWinner("team2") }}>Team 2 Wins</Button>
+                <div className="flex justify-between mt-4">
+                    <Button variant="outlined" onClick={() => { handleWinner("team1") }}>Team 1 Wins</Button>
+                    <Button className="text-right"
+                        variant="outlined" onClick={() => { handleWinner("team2") }}>Team 2 Wins</Button>
+                </div>
             </CardContent>
         </Card>
     );

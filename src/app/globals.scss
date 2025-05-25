@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #09111dd8;
+    --foreground: #ededed;
+    --card-color: #171717;
+  }
+}
+
+h1 {
+  color: var(--foreground);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 20px 0;
+  text-align: center;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.MuiCardContent-root {
+  background-color: var(--card-color);
+  color: var(--foreground);
+
+  h4 {
+    color: var(--foreground);
+    padding: 15px 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  span {
+    position: relative;
+    color: var(--foreground);
+    font-size: 0.9rem;
+    padding: 0 10px;
+  }
+
+  span.winner::after {
+    // Create a green checkmark icon at the upper-right corner
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    content: " ";
+    color: green;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  }
+}
+
+.MuiFormControl-root {
+  // width: 100%;
+}
+
+.MuiInputBase-root {
+  color: var(--foreground);
+  background-color: #233c63;
+  border-radius: 4px;
+  margin: 10px 2px;
+}
+
+.MuiInputBase-input {
+  color: var(--foreground) !important;
+}
+
+.MuiButton-root {
+  background-color: #233c63;
+  color: var(--foreground) !important;
+  border-radius: 4px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.MuiButton-root:hover {
+  background-color: var(--foreground);
+  color: var(--background) !important;
+}

@@ -14,6 +14,8 @@ import {
     TextEditorModule,
     RowSelectionModule,
     RowApiModule,
+
+    colorSchemeDarkBlue,
 } from "ag-grid-community";
 import { themeQuartz } from 'ag-grid-community';
 import { PlayerStats } from "@/app/types";
@@ -31,7 +33,12 @@ ModuleRegistry.registerModules([
     RowApiModule,
     AllCommunityModule
 ]);
-const AgTheme = themeQuartz.withParams({ accentColor: 'blue' });
+const AgTheme = themeQuartz
+    .withPart(colorSchemeDarkBlue)
+    .withParams({
+        accentColor: 'white',
+        cellFontFamily: 'monospace',
+    });
 
 const columnDefs: ColDef[] = [
     { field: "name", headerName: "Player", sortable: true, filter: true, editable: true },
