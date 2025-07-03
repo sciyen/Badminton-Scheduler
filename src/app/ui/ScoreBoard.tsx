@@ -40,15 +40,6 @@ const AgTheme = themeQuartz
         cellFontFamily: 'monospace',
     });
 
-const columnDefs: ColDef[] = [
-    { field: "name", headerName: "Player", sortable: true, filter: true, editable: true },
-    { field: "games", headerName: "Games", sortable: true, filter: true },
-    { field: "wins", headerName: "Wins", sortable: true, filter: true },
-    { field: "num_teammates", headerName: "#Teammates", sortable: true, filter: true },
-    { field: "num_opponents", headerName: "#Opponents", sortable: true, filter: true },
-    { field: "winRate", headerName: "Win Rate", sortable: true, filter: true },
-];
-
 interface IScore {
     name: string;
     games: number;
@@ -66,6 +57,24 @@ interface scoreBoardProps {
 
 const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange }) => {
     const [api, setApi] = useState<GridApi>();
+    
+    const columnDefs: ColDef[] = useMemo(() => [
+        { 
+            field: "name", 
+            headerName: "Player", 
+            sortable: true, 
+            filter: true, 
+            editable: editable,
+            checkboxSelection: true,
+            headerCheckboxSelection: true
+        },
+        { field: "games", headerName: "Games", sortable: true, filter: true },
+        { field: "wins", headerName: "Wins", sortable: true, filter: true },
+        { field: "num_teammates", headerName: "#Teammates", sortable: true, filter: true },
+        { field: "num_opponents", headerName: "#Opponents", sortable: true, filter: true },
+        { field: "winRate", headerName: "Win Rate", sortable: true, filter: true },
+    ], [editable]);
+    
     const rowData: IScore[] = useMemo(() => {
         return stats.map((player) => ({
             name: player.name,
@@ -114,6 +123,7 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
     const removePlayer = useCallback(() => {
         if (!api) return;
         const selected = api.getSelectedRows();
+        console.log("Selected players to remove:", selected);
         const nameToRemove = selected.map((player: IScore) => player.name);
 
         onPlayerChange(stats.filter(player => !nameToRemove.includes(player.name)));
@@ -127,7 +137,7 @@ const ScoreBoard: React.FC<scoreBoardProps> = ({ editable, stats, onPlayerChange
             resizable: true,
         },
         rowSelection: 'multiple',
-        suppressRowClickSelection: true,
+        suppressRowClickSelection: false, // Allow row selection by clicking
         animateRows: true,
         theme: AgTheme,
         columnDefs: columnDefs,
